@@ -1,42 +1,39 @@
 import sqlite3
 
-def print_counts_of_emails_from_file() -> None:
-    conn = sqlite3.connect('emaildb.sqlite')
-    cur = conn.cursor()
+conn = sqlite3.connect('emaildb.sqlite')
+cur = conn.cursor()
 
-    cur.execute('DROP TABLE IF EXISTS Counts')
+cur.execute('DROP TABLE IF EXISTS Counts')
 
-    cur.execute('''
-    CREATE TABLE Counts (email TEXT, count INTEGER)''')
+cur.execute('''
+CREATE TABLE Counts (email TEXT, count INTEGER)''')
 
-    fname = input('Enter file name: ')
-    # Leave this here for testing
-    if (len(fname) < 1): fname = 'mbox-long.txt'
+fname = input('Enter file name: ')
+# Leave this here for testing
+if (len(fname) < 1): fname = 'mbox-long.txt'
 
-    fh = open(fname)
+fh = open(fname)
 
-    for line in fh:
-        if not line.startswith('From: '): continue
-        pieces = line.split()
-        email = pieces[1]
-        cur.execute('SELECT count FROM Counts WHERE email = ? ', (email,))
-        row = cur.fetchone()
+for line in fh:
+    if not line.startswith('From: '): continue
+    pieces = line.split()
+    email = pieces[1]
+    cur.execute('SELECT count FROM Counts WHERE email = ? ', (email,))
+    row = cur.fetchone()
 
-        if row is None:
-            cur.execute('''INSERT INTO Counts (email, count)
-                    VALUES (?, 1)''', (email,))
-        else:
-            cur.execute('UPDATE Counts SET count = count + 1 WHERE email = ?',
-                        (email,))
-                        
-        conn.commit()
+    if row is None:
+        cur.execute('''INSERT INTO Counts (email, count)
+                VALUES (?, 1)''', (email,))
+    else:
+        cur.execute('UPDATE Counts SET count = count + 1 WHERE email = ?',
+                    (email,))
 
-    # https://www.sqlite.org/lang_select.html
-    sqlstr = 'SELECT email, count FROM Counts ORDER BY count DESC LIMIT 10'
+    conn.commit()
 
-    for row in cur.execute(sqlstr):
-        print(str(row[0]), row[1])
+# https://www.sqlite.org/lang_select.html
+sqlstr = 'SELECT email, count FROM Counts ORDER BY count DESC LIMIT 10'
 
-    cur.close()
+for row in cur.execute(sqlstr):
+    print(str(row[0]), row[1])
 
-# Don't call your function when you submit it
+cur.close()

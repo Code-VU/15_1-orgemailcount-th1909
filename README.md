@@ -15,7 +15,10 @@ Because the sample code is using an UPDATE statement and committing the results 
 
 The program can be speeded up greatly by moving the commit operation outside of the loop. In any database program, there is a balance between the number of operations you execute between commits and the importance of not losing the results of operations that have not yet been committed.
 
-## Expected output:
+The test will be specifically looking at your `emaildb.sqlite` DB
+
+
+## Expected output after printing DB:
 ```
 Enter file name: 
 iupui.edu 536
