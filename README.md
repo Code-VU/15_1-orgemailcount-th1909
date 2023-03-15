@@ -1,4 +1,4 @@
-# Assignment 15.1 SQLLite
+# Assignment 15.1 SQLite
 ## Directions
 Write a program that will read the mailbox data (mbox-long.txt) and count the number of email messages from each organizaion, per organization (i.e. domain name of the email address, like `iupui.edu`) using a database with the following schema to maintain the counts.
 
